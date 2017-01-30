@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button icon-only menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Inicio</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-card *ngFor="let match of matches; let i = index">
+        <ion-item>
+            <h2>Match</h2>
+        </ion-item>
+        <img src="img/advance-card-bttf.png">
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col width-33 center text-center><img src="assets/img/{{match.teamName1}}.png" alt=""></ion-col>
+                    <ion-col width-33 center text-center><img src="assets/img/vs.png" alt=""></ion-col>
+                    <ion-col width-33 center text-center><img src="assets/img/{{match.teamName2}}.png" alt=""></ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+        <ion-row>
+            <ion-col center text-center>
+                <button ion-button icon-left color="primary" block (click)="presentActionSheet()">
+                    <ion-icon name="checkbox-outline"></ion-icon>
+                    Escoge
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+</ion-content>
