@@ -38,8 +38,8 @@ export class HomePage {
 		    });
 		    // subscribe to changes
 		    this.items.subscribe(queriedItems => {
-		      this.regPolls = queriedItems;
-		      console.log(queriedItems);
+				this.regPolls = queriedItems;
+				console.log(queriedItems);
 		    });
 		  // Set fbData as undefined
 		  } else {
@@ -57,31 +57,35 @@ export class HomePage {
 		});
 	}
 
-	presentActionSheet() {
+	presentActionSheet(team1, team2) {
 		let actionSheet = this.actionSheetCtrl.create({
-			title: 'Modify your album',
+			title: 'Escoge',
 			buttons: [
-			{
-			  text: 'Destructive',
-			  role: 'destructive',
-			  handler: () => {
-			    console.log('Destructive clicked');
-			  }
-			},{
-			  text: 'Archive',
-			  handler: () => {
-			    console.log('Archive clicked');
-			  }
-			},{
-			  text: 'Cancel',
-			  role: 'cancel',
-			  handler: () => {
-			    console.log('Cancel clicked');
-			  }
-			}
+				{
+				  text: team1,
+				  handler: () => {
+				    console.log('Team1 clicked');
+				  }
+				},{
+				  text: 'Tie',
+				  handler: () => {
+				    console.log('Tie clicked');
+				  }
+				},{
+				  text: team2,
+				  handler: () => {
+				    console.log('Team2 clicked');
+				  }
+				},{
+				  text: 'Cancel',
+				  role: 'cancel',
+				  handler: () => {
+				    console.log('Cancel clicked');
+				  }
+				}
 			]
 		});
-		actionSheet.present();	
+		actionSheet.present();
 	}
 
 }

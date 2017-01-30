@@ -9,7 +9,7 @@
 <ion-content padding>
     <ion-card *ngFor="let match of matches; let i = index">
         <ion-item>
-            <h2>Match</h2>
+            <h2>Match {{i}}</h2>
         </ion-item>
         <img src="img/advance-card-bttf.png">
         <ion-card-content>
@@ -23,7 +23,7 @@
         </ion-card-content>
         <ion-row>
             <ion-col center text-center>
-                <button ion-button icon-left color="primary" block (click)="presentActionSheet()">
+                <button ion-button icon-left color="primary" block (click)="presentActionSheet(match.teamName1, match.teamName2)">
                     <ion-icon name="checkbox-outline"></ion-icon>
                     Escoge
                 </button>
