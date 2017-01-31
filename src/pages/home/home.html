@@ -6,12 +6,11 @@
         <ion-title>Inicio</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
     <ion-card *ngFor="let match of matches; let i = index">
         <ion-item>
-            <h2>Match {{i}}</h2>
+            <h2 style="text-align: center;">This {{i + 1}}</h2>
         </ion-item>
-        <img src="img/advance-card-bttf.png">
         <ion-card-content>
             <ion-grid>
                 <ion-row>
@@ -23,11 +22,12 @@
         </ion-card-content>
         <ion-row>
             <ion-col center text-center>
-                <button ion-button icon-left color="primary" block (click)="presentActionSheet(match.teamName1, match.teamName2)">
+                <button ion-button icon-left color="primary" block (click)="presentActionSheet(match.teamName1, match.teamName2, i)">
                     <ion-icon name="checkbox-outline"></ion-icon>
                     Escoge
                 </button>
             </ion-col>
         </ion-row>
     </ion-card>
+    <button ion-button full (click)="saveIt()">Guardar</button>
 </ion-content>

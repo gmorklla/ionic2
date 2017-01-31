@@ -4,6 +4,7 @@ import { NavController } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { Subject } from 'rxjs/Subject';
 import { Match } from '../../app/match';
+import { Result } from '../../app/result';
 import { MatchesService } from '../../providers/matches.service';
 
 @Component({
@@ -15,6 +16,8 @@ export class HomePage {
 	nombre: string;
 	matches: Match[];
 	fbData;
+	// Array of results
+	results: Result[] = [];
 	// Array of registered polls
 	regPolls;
 	// Firebase list of polls for save data
@@ -57,24 +60,30 @@ export class HomePage {
 		});
 	}
 
-	presentActionSheet(team1, team2) {
+	presentActionSheet(team1, team2, indice) {
 		let actionSheet = this.actionSheetCtrl.create({
 			title: 'Escoge',
 			buttons: [
 				{
 				  text: team1,
 				  handler: () => {
-				    console.log('Team1 clicked');
+					console.log('Team1 clicked');
+					let resultado: Result = new Result(team1, indice);
+					this.setResults(resultado);
 				  }
 				},{
-				  text: 'Tie',
+				  text: 'Empate',
 				  handler: () => {
 				    console.log('Tie clicked');
+					let resultado: Result = new Result('empate', indice);
+					this.setResults(resultado);
 				  }
 				},{
 				  text: team2,
 				  handler: () => {
 				    console.log('Team2 clicked');
+					let resultado: Result = new Result(team2, indice);
+					this.setResults(resultado);
 				  }
 				},{
 				  text: 'Cancel',
@@ -86,6 +95,52 @@ export class HomePage {
 			]
 		});
 		actionSheet.present();
+	}
+
+	// Feed the result array with the user selections
+	setResults(e: Result) {
+		this.results[e.indice] = e;
+		console.log(this.results);
+	}
+	// Save function
+	saveIt() {
+		if(this.fbData == undefined) {
+			// Feedback the user
+			console.log('No has iniciado sesión');
+			return;
+		}
+
+		// Denie save feature if not all results have been defined
+		if(this.results.length != this.matches.length) {
+			// Feedback the user
+			console.log('Te faltan pronósticos por llenar');
+			return;
+		}
+		// Denie save feature if user have a poll registered
+		if(this.checkRegPolls()) {
+			// Feedback the user
+			console.log('Ya habías ingresado tu quiniela');
+			return;
+		}
+
+		// Save data in Firebase list
+		this.polls.push({
+			resultados: this.results,
+			id: this.fbData.uid,
+			foto: this.fbData.photoURL,
+			nombre: this.fbData.displayName
+		})
+			.then(_ => console.log('Tu quiniela ha sido guardada'))
+			.catch(err => console.log('Hubo un problema al guardar tu quiniela, intenta de nuevo.'));
+	}
+
+	checkRegPolls(): boolean {
+		for (var i = 0; i < this.regPolls.length; ++i) {
+			if(this.regPolls[i].id == this.fbData.uid) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
