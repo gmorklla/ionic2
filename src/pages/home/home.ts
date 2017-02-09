@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActionSheetController } from 'ionic-angular';
 import { NavController } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
@@ -6,12 +6,13 @@ import { Subject } from 'rxjs/Subject';
 import { Match } from '../../app/match';
 import { Result } from '../../app/result';
 import { MatchesService } from '../../providers/matches.service';
+import { AuthService } from '../../providers/auth-service';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
 	nombre: string;
 	matches: Match[];
@@ -25,16 +26,16 @@ export class HomePage {
 	// Firebase list to keep track of registered polls
 	items: FirebaseListObservable<any[]>;
 
-	constructor(public navCtrl: NavController, public af: AngularFire, private matchesService: MatchesService, public actionSheetCtrl: ActionSheetController) {
-		// Check for user auth
-		this.af.auth.subscribe(auth => {
-		  // If the user have log in
-		  if(auth) {
-		    this.fbData = auth.auth;
+	constructor(public navCtrl: NavController, public af: AngularFire, private matchesService: MatchesService, public actionSheetCtrl: ActionSheetController, public authData: AuthService) { }
 
-		    this.polls = af.database.list('/polls');
+	ngOnInit() {
+	    this.authData.authOrNot().subscribe( user => {
+	      if (user) {
+		    this.fbData = this.authData.fbData;
 
-		    this.items = af.database.list('/polls', {
+		    this.polls = this.af.database.list('/polls');
+
+		    this.items = this.af.database.list('/polls', {
 		      query: {
 		        orderByKey: true
 		      }
@@ -44,13 +45,13 @@ export class HomePage {
 				this.regPolls = queriedItems;
 				console.log(queriedItems);
 		    });
-		  // Set fbData as undefined
-		  } else {
-		    this.fbData = undefined;
-		  }
-		});
+	      } else {
+	        console.error('Not log in');
+	        this.fbData = undefined;
+	      }
+	    });
 
-		this.gettingMatches();
+	    this.gettingMatches();
 	}
 
 	gettingMatches() {

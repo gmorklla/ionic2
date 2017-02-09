@@ -8,6 +8,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { AuthComponent } from './auth/auth.component';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 import { MatchesService } from '../providers/matches.service';
+import { AuthService } from '../providers/auth-service';
 
 // Must export the config
 export const firebaseConfig = {
@@ -45,6 +46,6 @@ const myFirebaseAuthConfig = {
     HomePage,
     TabsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, MatchesService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, MatchesService, AuthService]
 })
 export class AppModule {}
