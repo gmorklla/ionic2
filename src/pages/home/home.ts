@@ -47,7 +47,7 @@ export class HomePage implements OnInit {
 				console.log(queriedItems);
 		    });
 	      } else {
-	        console.error('Not log in');
+	        console.log('Not log in');
 	        this.fbData = undefined;
 	      }
 	    });
