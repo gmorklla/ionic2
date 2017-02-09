@@ -29,6 +29,7 @@ export class HomePage implements OnInit {
 	constructor(public navCtrl: NavController, public af: AngularFire, private matchesService: MatchesService, public actionSheetCtrl: ActionSheetController, public authData: AuthService) { }
 
 	ngOnInit() {
+		// Prueba git merge
 	    this.authData.authOrNot().subscribe( user => {
 	      if (user) {
 		    this.fbData = this.authData.fbData;
